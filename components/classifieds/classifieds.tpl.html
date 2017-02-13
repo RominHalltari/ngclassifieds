@@ -15,16 +15,16 @@
     
     <span flex></span>
     
-    <md-button ui-sref="auth" ng-if="!vm.authData">
+    <md-button ui-sref="auth" ng-if="!vm.isAuthenticated">
       <md-icon class="mdi mdi-account"></md-icon>
       Login
     </md-button>
     
-    <div ng-if="vm.authData">
-      <md-button ui-sref="auth" ng-click="vm.auth.$unauth()">      
+    <div ng-if="vm.isAuthenticated">
+      <md-button ng-click="vm.auth.signOut()">
         Logout       
       </md-button>
-      <img flex-align="center start" ng-src="{{ vm.authData.password.profileImageURL }}" class="profile-image" alt="Profile Image" />  
+      <img flex-align="center start" ng-src="{{ vm.authData.user.photoURL }}" class="profile-image" alt="Profile Image" />  
     </div>
     
 

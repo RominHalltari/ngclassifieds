@@ -4,7 +4,9 @@
   
   angular
     .module('ngClassifieds')
-    .controller('authController', function(auth, $state) {
+    .controller('authController', function(auth, $state, $firebaseAuth) {
+
+      var auth = $firebaseAuth();
         
       var vm = this;
       
@@ -17,28 +19,24 @@
         // log them out before proceeding
         auth.ref.$unauth();
         
-        auth.ref.$createUser({
-          email: vm.email,
-          password: vm.password
-        }).then(function(userData) {
-          login()
-        }).catch(function(error) {
-          vm.error = error;
+        firebase
+          .auth()
+          .createUserWithEmailAndPassword(vm.email, vm.password)
+          .catch(function(error) {
+            vm.error = error;
         });
       }
       
       function login() {
-        
-        auth.ref.$authWithPassword({          
-          email: vm.email,
-          password: vm.password
-        }).then(function(data) {
-          vm.email = null;
-          vm.password = null;
-          $state.go('classifieds');
-        }).catch(function(error) {
-          console.log(error);
-        });
+
+        auth
+          .$signInWithEmailAndPassword(vm.email, vm.password)
+          .then(function(result) {
+            $state.go('classifieds');
+          })
+          .catch(function(error) {
+            vm.error = error;
+          });
       }
     
   });

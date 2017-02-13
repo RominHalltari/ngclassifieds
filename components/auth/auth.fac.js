@@ -5,12 +5,19 @@
   angular
     .module('ngClassifieds')
     .factory('auth', function($firebaseAuth) {
-        
-      var ref = new Firebase('https://ngclassifieds.firebaseio.com/');
+
+      function signOut() {
+        return firebase.auth().signOut()
+          .then(function() {
+            console.log('signed out')
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+      }
     
       return {
-        ref: $firebaseAuth(ref),
-        user: ref.getAuth()
+        signOut: signOut
       }
       
     });

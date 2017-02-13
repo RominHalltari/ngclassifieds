@@ -8,22 +8,24 @@
 
       var vm = this;
 
+      vm.auth = auth;
+      vm.isAuthenticated = false;
+
+      firebase.auth().onAuthStateChanged(function(user) {
+        if (user) {
+          vm.isAuthenticated = true
+        } else {
+          vm.isAuthenticated = false;
+        }
+      });
+
       vm.openSidebar = openSidebar;
       vm.showFilters = false;
       
-      vm.auth = auth.ref;
-      
-      // This is the async way of getting the
-      // current user's auth data
-      auth.ref.$onAuth(function(authData) {
-        vm.authData = authData;
-      });
-      
       vm.classifieds = classifiedsFactory.ref;
-      vm.classifieds.$loaded().then(function(classifieds) {
-        vm.categories = getCategories(classifieds);
-        console.log(classifieds);
-      });
+
+      vm.authData = auth.user;
+      console.log(vm.authData)
 
       $scope.$on('newClassified', function(event, data) {
         vm.classifieds.$add(data);

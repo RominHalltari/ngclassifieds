@@ -6,7 +6,7 @@
     .module('ngClassifieds')
     .factory('classifiedsFactory', function($firebaseArray) {
 
-      var ref = new Firebase('https://ngclassifieds.firebaseio.com/');
+      var ref = firebase.database().ref();
 
       return {
         ref: $firebaseArray(ref)
